@@ -1,19 +1,19 @@
-import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/ShortcutOutlined';
+import ShortcutIcon from '@mui/icons-material/ShortcutOutlined';
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
-import { Quad, Quad_Object, Store } from 'n3';
+import { Quad, Quad_Object, Store, Triple } from 'n3';
 import React from 'react';
 
 
 
-export const semanticQuery = async (endpointUrl:string, store:Store,object:Quad_Object)=>{
+export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
     // just doublechecks if the object is in the store.
     // should match every time
-    const objects = (store:Store,object:Quad_Object)=>{
-        return store.getQuads(null, null, object,null)
+    const objects = (store:Store,triple:Triple)=>{
+        return store.getQuads(null, null, quad.object,null)
     }
 
-   if(object) return true
+   if(quad.object) return true
 
    return false
 }
@@ -26,7 +26,7 @@ export default function ForwardFab(endpointUrl:string, store:Store, triple:Quad,
                     cursor: "default",
                     transform: "scale(1.2)"
                     }}}>
-                <TipsAndUpdatesOutlinedIcon sx={{color:"white"}} />
+                <ShortcutIcon sx={{color:"white"}} />
             </IconButton> 
         </Tooltip>
 

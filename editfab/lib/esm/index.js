@@ -40,13 +40,13 @@ import IconButton from "@mui/material/IconButton";
 import React, { useState } from "react";
 import EditAction from "./EditAction";
 import SparqlClient from "sparql-http-client";
-export var semanticQuery = function (endpointUrl, store, object) { return __awaiter(void 0, void 0, void 0, function () {
+export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
     var objects;
     return __generator(this, function (_a) {
-        objects = function (store, object) {
-            return store.getQuads(null, null, object, null);
+        objects = function (store, quad) {
+            return store.getQuads(null, null, quad.object, null);
         };
-        if (object)
+        if (quad.object)
             return [2 /*return*/, true];
         return [2 /*return*/, false];
     });

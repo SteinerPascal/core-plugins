@@ -1,0 +1,34 @@
+{
+  "name": "forwardfab",
+  "version": "1.0.0",
+  "description": "plugin for the planttwin",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/icons-material": "^5.8.1",
+    "@mui/material": "^5.8.1",
+    "@tpluscode/sparql-builder": "^0.3.23",
+    "n3": "^1.16.2",
+    "sparql-http-client": "^2.4.1"
+  },
+  "devDependencies": {
+    "@types/n3": "^1.10.3",
+    "@types/sparql-http-client": "^2.2.8",
+    "typescript": "^4.7.4"
+  },
+  "peerDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "react": "file:../plant-twin/node_modules/react/",
+    "react-dom": "file:../plant-twin/node_modules/react-dom/"
+  }
+}

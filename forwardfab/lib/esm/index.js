@@ -34,17 +34,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/ShortcutOutlined';
+import ShortcutIcon from '@mui/icons-material/ShortcutOutlined';
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import React from 'react';
-export var semanticQuery = function (endpointUrl, store, object) { return __awaiter(void 0, void 0, void 0, function () {
+export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
     var objects;
     return __generator(this, function (_a) {
-        objects = function (store, object) {
-            return store.getQuads(null, null, object, null);
+        objects = function (store, triple) {
+            return store.getQuads(null, null, quad.object, null);
         };
-        if (object)
+        if (quad.object)
             return [2 /*return*/, true];
         return [2 /*return*/, false];
     });
@@ -56,5 +56,5 @@ export default function ForwardFab(endpointUrl, store, triple, actionCB) {
                     cursor: "default",
                     transform: "scale(1.2)"
                 } } },
-            React.createElement(TipsAndUpdatesOutlinedIcon, { sx: { color: "white" } }))));
+            React.createElement(ShortcutIcon, { sx: { color: "white" } }))));
 }

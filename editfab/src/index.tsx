@@ -7,14 +7,14 @@ import EditAction from "./EditAction";
 import SparqlClient from "sparql-http-client";
 
 
-export const semanticQuery = async (endpointUrl:string, store:Store,object:Quad_Object)=>{
+export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
     // just doublechecks if the object is in the store.
     // should match every time
-    const objects = (store:Store,object:Quad_Object)=>{
-        return store.getQuads(null, null, object,null)
+    const objects = (store:Store,quad:Quad)=>{
+        return store.getQuads(null, null, quad.object,null)
     }
 
-   if(object) return true
+   if(quad.object) return true
 
    return false
 }

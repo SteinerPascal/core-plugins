@@ -40,15 +40,11 @@ import IconButton from "@mui/material/IconButton";
 import React from "react";
 import { useRef, useState } from "react";
 import SparqlClient from "sparql-http-client";
-export var semanticQuery = function (endpointUrl, store, object) { return __awaiter(void 0, void 0, void 0, function () {
-    var objects;
+export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        objects = function (store, object) {
-            return store.getQuads(null, null, object, null);
-        };
-        if (object)
-            return [2 /*return*/, true];
-        return [2 /*return*/, false];
+        // just doublechecks if the object is in the store.
+        // should match every time
+        return [2 /*return*/, true];
     });
 }); };
 export default function DeleteFab(endpointUrl, store, triple, actionCB) {
@@ -73,11 +69,11 @@ export default function DeleteFab(endpointUrl, store, triple, actionCB) {
         });
     }); };
     var DeleteAction = React.createElement(Stack, { spacing: 2 },
-        React.createElement("h3", null, "Would you like to delete this triple?"),
+        React.createElement("h3", null, "Would you like to DELETE this triple?"),
         React.createElement(TextField, { id: "outlined-basic", label: "Subject", variant: "outlined", value: triple.subject.value, sx: { backgroundColor: 'rgb(255,250,250,0.3)', zIndex: 1 } }),
         React.createElement(TextField, { id: "outlined-basic", label: "Subject", variant: "outlined", value: triple.predicate.value, sx: { backgroundColor: 'rgb(255,250,250,0.3)', zIndex: 1 } }),
         React.createElement(TextField, { id: "outlined-basic", label: "Subject", variant: "outlined", value: triple.object.value, sx: { backgroundColor: 'rgb(255,250,250,0.3)', zIndex: 1 } }),
-        React.createElement(Button, { color: btnState, onClick: function (e) { return updateDb(triple); }, variant: "contained", endIcon: React.createElement(DeleteIcon, null) }, "Update Triples"));
+        React.createElement(Button, { color: btnState, onClick: function (e) { return updateDb(triple); }, variant: "contained", endIcon: React.createElement(DeleteIcon, null) }, "Delete Triples"));
     var handleClicked = function () {
         actionCB(DeleteAction);
     };

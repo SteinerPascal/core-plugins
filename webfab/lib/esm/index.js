@@ -34,23 +34,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
+import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/ShortcutOutlined';
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import React from 'react';
 export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
-    var objects;
+    var isValidUrl, objects, response;
     return __generator(this, function (_a) {
+        isValidUrl = function (urlString) {
+            try {
+                return Boolean(new URL(urlString));
+            }
+            catch (e) {
+                return false;
+            }
+        };
         objects = function (store, object) {
             return store.getQuads(null, null, object, null);
         };
-        if (objects.length > 0)
-            return [2 /*return*/, true];
+        if (isValidUrl(quad.object.value)) {
+            console.warn('semantic btn');
+            console.warn("objectval: ".concat(quad.object.value));
+            response = window.open(new URL(quad.object.value));
+            if (response) {
+                console.log("OK: ".concat(quad.object.value));
+                return [2 /*return*/, true];
+            }
+        }
         return [2 /*return*/, false];
     });
 }); };
-export default function InformationFab(endpointUrl, store, triple, actionCB) {
-    return (React.createElement(Tooltip, { title: "Show more information", placement: "top" },
+export default function WebFab(endpointUrl, store, triple, actionCB) {
+    return (React.createElement(Tooltip, { title: "Jump to website", placement: "top" },
         React.createElement(IconButton, { "aria-label": "delete", sx: { backgroundColor: '#870058', "&:hover": {
                     backgroundColor: "#870058",
                     cursor: "default",

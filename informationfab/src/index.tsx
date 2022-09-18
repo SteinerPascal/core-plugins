@@ -6,12 +6,13 @@ import React from 'react';
 
 
 
-export const semanticQuery = async (endpointUrl:string, store:Store,object:Quad_Object)=>{
+export const semanticQuery = async (endpointUrl:string, store:Store,quad:Quad)=>{
     // just doublechecks if the object is in the store.
     // should match every time
     const objects = (store:Store,object:Quad_Object)=>{
         return store.getQuads(null, null, object,null)
     }
+
 
    if(objects.length > 0) return true
 
