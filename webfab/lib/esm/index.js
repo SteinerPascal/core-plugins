@@ -34,10 +34,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/ShortcutOutlined';
+import LanguageIconOutlined from '@mui/icons-material/Language';
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import React from 'react';
+import WebAction from './WebAction';
 export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
     var validUrl, sendNoCorsReq, url, response;
     return __generator(this, function (_a) {
@@ -77,12 +78,15 @@ export var semanticQuery = function (endpointUrl, store, quad) { return __awaite
         }
     });
 }); };
-export default function WebFab(endpointUrl, store, triple, actionCB) {
+export default function WebFab(endpointUrl, store, quad, actionCB) {
+    var handleClicked = function () {
+        actionCB(React.createElement(WebAction, { quad: quad }));
+    };
     return (React.createElement(Tooltip, { title: "Jump to website", placement: "top" },
-        React.createElement(IconButton, { "aria-label": "delete", sx: { backgroundColor: '#870058', "&:hover": {
+        React.createElement(IconButton, { onClick: function () { handleClicked(); }, "aria-label": "delete", sx: { backgroundColor: '#870058', "&:hover": {
                     backgroundColor: "#870058",
                     cursor: "default",
                     transform: "scale(1.2)"
                 } } },
-            React.createElement(TipsAndUpdatesOutlinedIcon, { sx: { color: "white" } }))));
+            React.createElement(LanguageIconOutlined, { sx: { color: "white" } }))));
 }
