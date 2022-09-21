@@ -44,6 +44,7 @@ import IconButton from "@mui/material/IconButton";
 import React from 'react';
 import SparqlClient from "sparql-http-client";
 import { SELECT } from '@tpluscode/sparql-builder';
+import InformationAction from './InformationAction';
 export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
     var objects, client, query, bindingsStream;
     return __generator(this, function (_a) {
@@ -59,11 +60,13 @@ export var semanticQuery = function (endpointUrl, store, quad) { return __awaite
                 client = new SparqlClient({ endpointUrl: endpointUrl });
                 query = SELECT.ALL.WHERE(templateObject_1 || (templateObject_1 = __makeTemplateObject(["", " ?p ?o"], ["", " ?p ?o"])), quad.object).build();
                 console.log("query:".concat(query));
-                return [4 /*yield*/, client.query.select(query)];
+                return [4 /*yield*/, client.query.select(query)
+                    // check if this entity has a property assertion to a rdfs:comment
+                ];
             case 1:
                 bindingsStream = _a.sent();
+                // check if this entity has a property assertion to a rdfs:comment
                 bindingsStream.on('data', function (row) {
-                    console.log("row:".concat(console.dir(row)));
                     Object.entries(row).forEach(function (_a) {
                         var key = _a[0], value = _a[1];
                         if (key === 'p') {
@@ -81,9 +84,12 @@ export var semanticQuery = function (endpointUrl, store, quad) { return __awaite
         }
     });
 }); };
-export default function InformationFab(endpointUrl, store, triple, actionCB) {
+export default function InformationFab(endpointUrl, store, quad, actionCB) {
+    var handleClicked = function () {
+        actionCB(React.createElement(InformationAction, { endpointUrl: endpointUrl, quad: quad }));
+    };
     return (React.createElement(Tooltip, { title: "Show more information", placement: "top" },
-        React.createElement(IconButton, { "aria-label": "delete", sx: { backgroundColor: '#870058', "&:hover": {
+        React.createElement(IconButton, { onClick: function () { handleClicked(); }, "aria-label": "delete", sx: { backgroundColor: '#870058', "&:hover": {
                     backgroundColor: "#870058",
                     cursor: "default",
                     transform: "scale(1.2)"

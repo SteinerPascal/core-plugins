@@ -38,20 +38,21 @@ import ShortcutIcon from '@mui/icons-material/ShortcutOutlined';
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import React from 'react';
+import ForwardAction from './ForwardAction';
 export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
-    var objects;
     return __generator(this, function (_a) {
-        objects = function (store, triple) {
-            return store.getQuads(null, null, quad.object, null);
-        };
-        if (quad.object)
+        // It doesn't make sense to jump to literals, variables, or to BlankNodes
+        if (quad.object.termType === "NamedNode")
             return [2 /*return*/, true];
         return [2 /*return*/, false];
     });
 }); };
-export default function ForwardFab(endpointUrl, store, triple, actionCB) {
+export default function ForwardFab(endpointUrl, store, quad, actionCB) {
+    var handleClicked = function () {
+        actionCB(React.createElement(ForwardAction, { quad: quad }));
+    };
     return (React.createElement(Tooltip, { title: "Jump to entity", placement: "top" },
-        React.createElement(IconButton, { "aria-label": "delete", sx: { backgroundColor: '#870058', "&:hover": {
+        React.createElement(IconButton, { onClick: function () { handleClicked(); }, "aria-label": "delete", sx: { backgroundColor: '#870058', "&:hover": {
                     backgroundColor: "#870058",
                     cursor: "default",
                     transform: "scale(1.2)"

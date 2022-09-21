@@ -34,27 +34,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import { Tooltip } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+import { Button, Stack, TextField } from "@mui/material";
 import React from "react";
-import DeleteAction from "./DeleteAction";
-export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        // just doublechecks if the object is in the store.
-        // should match every time
-        return [2 /*return*/, true];
-    });
-}); };
-export default function DeleteFab(endpointUrl, store, quad, actionCB) {
-    var handleClicked = function () {
-        actionCB(React.createElement(DeleteAction, { endpointUrl: endpointUrl, quad: quad }));
-    };
-    return (React.createElement(Tooltip, { title: "Delete this triple", placement: "top" },
-        React.createElement(IconButton, { onClick: function () { handleClicked(); }, "aria-label": "delete", sx: { backgroundColor: '#004E64', "&:hover": {
-                    backgroundColor: "#004E64",
-                    cursor: "default",
-                    transform: "scale(1.2)"
-                } } },
-            React.createElement(DeleteIcon, { sx: { color: "white" } }))));
+import { useRef, useState } from "react";
+import SparqlClient from "sparql-http-client";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+export default function DeleteAction(_a) {
+    var _this = this;
+    var endpointUrl = _a.endpointUrl, quad = _a.quad;
+    var btn = useRef(null);
+    var _b = useState('primary'), btnState = _b[0], setBtnState = _b[1];
+    var updateDb = function (q) { return __awaiter(_this, void 0, void 0, function () {
+        var client, updateQuery, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    client = new SparqlClient({ endpointUrl: endpointUrl });
+                    updateQuery = "DELETE DATA{".concat(quad.subject.value, " ").concat(quad.predicate.value, " ").concat(quad.object.value, "} INSERT {").concat(q.subject.value, " ").concat(q.predicate.value, " ").concat(q.object.value, "}");
+                    return [4 /*yield*/, client.query.update(updateQuery)];
+                case 1:
+                    response = _a.sent();
+                    console.log("Response on delete ".concat(console.dir(response)));
+                    if (btn)
+                        response ? setBtnState('success') : setBtnState('error');
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    return (React.createElement(Stack, { spacing: 2 },
+        React.createElement("h3", null, "Would you like to DELETE this triple?"),
+        React.createElement(TextField, { id: "outlined-basic", label: "Subject", variant: "outlined", value: quad.subject.value, sx: { backgroundColor: 'rgb(255,250,250,0.3)', zIndex: 1 } }),
+        React.createElement(TextField, { id: "outlined-basic", label: "Subject", variant: "outlined", value: quad.predicate.value, sx: { backgroundColor: 'rgb(255,250,250,0.3)', zIndex: 1 } }),
+        React.createElement(TextField, { id: "outlined-basic", label: "Subject", variant: "outlined", value: quad.object.value, sx: { backgroundColor: 'rgb(255,250,250,0.3)', zIndex: 1 } }),
+        React.createElement(Button, { color: btnState, onClick: function (e) { return updateDb(quad); }, variant: "contained", endIcon: React.createElement(DeleteIcon, null) }, "Delete Triples")));
 }

@@ -92,11 +92,13 @@ export default function EditFab(endpointUrl, store, triple, actionCB) {
                 case 0:
                     client = new SparqlClient({ endpointUrl: endpointUrl });
                     updateQuery = "DELETE DATA{".concat(triple.subject.value, " ").concat(triple.predicate.value, " ").concat(triple.object.value, "} INSERT {").concat(q.subject.value, " ").concat(q.predicate.value, " ").concat(q.object.value, "}");
-                    return [4 /*yield*/, client.query.update(updateQuery)];
+                    return [4 /*yield*/, client.query.update(updateQuery)]; //TODO: check what the response object looks like. is it Really a 'Response'?
                 case 1:
-                    response = _a.sent();
-                    console.log("Response on upate ".concat(console.dir(response)));
-                    return [2 /*return*/, true];
+                    response = _a.sent() //TODO: check what the response object looks like. is it Really a 'Response'?
+                    ;
+                    if (response)
+                        return [2 /*return*/, true];
+                    return [2 /*return*/, false];
             }
         });
     }); };
