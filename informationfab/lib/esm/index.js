@@ -1,3 +1,7 @@
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -38,15 +42,43 @@ import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlin
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import React from 'react';
+import SparqlClient from "sparql-http-client";
+import { SELECT } from '@tpluscode/sparql-builder';
 export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
-    var objects;
+    var objects, client, query, bindingsStream;
     return __generator(this, function (_a) {
-        objects = function (store, object) {
-            return store.getQuads(null, null, object, null);
-        };
-        if (objects.length > 0)
-            return [2 /*return*/, true];
-        return [2 /*return*/, false];
+        switch (_a.label) {
+            case 0:
+                objects = function (store, object) {
+                    return store.getQuads(null, null, object, null);
+                };
+                if (!objects)
+                    return [2 /*return*/, false];
+                if (quad.object.termType !== "NamedNode")
+                    return [2 /*return*/, false];
+                client = new SparqlClient({ endpointUrl: endpointUrl });
+                query = SELECT.ALL.WHERE(templateObject_1 || (templateObject_1 = __makeTemplateObject(["", " ?p ?o"], ["", " ?p ?o"])), quad.object).build();
+                console.log("query:".concat(query));
+                return [4 /*yield*/, client.query.select(query)];
+            case 1:
+                bindingsStream = _a.sent();
+                bindingsStream.on('data', function (row) {
+                    console.log("row:".concat(console.dir(row)));
+                    Object.entries(row).forEach(function (_a) {
+                        var key = _a[0], value = _a[1];
+                        if (key === 'p') {
+                            if ((value === null || value === void 0 ? void 0 : value.value) === "http://www.w3.org/2000/01/rdf-schema#comment") {
+                                console.log("".concat(quad.object.id, " has comment"));
+                                return true;
+                            }
+                        }
+                    });
+                });
+                bindingsStream.on('error', function (err) {
+                    console.error(err);
+                });
+                return [2 /*return*/, false];
+        }
     });
 }); };
 export default function InformationFab(endpointUrl, store, triple, actionCB) {
@@ -58,3 +90,4 @@ export default function InformationFab(endpointUrl, store, triple, actionCB) {
                 } } },
             React.createElement(TipsAndUpdatesOutlinedIcon, { sx: { color: "white" } }))));
 }
+var templateObject_1;

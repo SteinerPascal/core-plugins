@@ -1,48 +1,56 @@
-import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/ShortcutOutlined';
+import LanguageIconOutlined from '@mui/icons-material/Language';
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
-import { Quad, Quad_Object, Store } from 'n3';
+import { Quad, Store } from 'n3';
 import React from 'react';
-
+import WebAction from './WebAction';
 
 
 export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
-    const isValidUrl = (urlString: string | URL) => {
-        try { 
-            return Boolean(new URL(urlString)); 
-        }
-        catch(e){ 
-            return false; 
+    const validUrl = (url:string)=> {
+        try {
+            return new URL(url.trim()) // eslint-disable-line no-new
+        } catch (_e) {
+            return null
         }
     }
-    const objects = (store:Store,object:Quad_Object)=>{
-        return store.getQuads(null, null, object,null)
-    }
-    
-    console.warn('semantic btn')
-    if (isValidUrl(quad.object.value)){
 
-        console.warn(`objectval: ${quad.object.value}`)
-        const response = window.open(new URL(quad.object.value));
-        if(response){
-            console.log(`OK: ${quad.object.value}`)
-            return true
-        } 
-    }   
-    return false
+    const sendNoCorsReq = (url:URL) => {
+        try {
+            return fetch(url,{
+                method: 'GET',
+                mode:'no-cors',
+                headers: {
+                  'Content-Type': 'text/plain'
+                }
+              });
+        } catch (_e) {
+            return null
+        }
+    }
+
+    const url = validUrl(quad.object.value)
+    if(!url) return false
+    const response = await sendNoCorsReq(url)
+    if(!response) return false
+    return true
+    
 }
 
-export default function WebFab(endpointUrl:string, store:Store, triple:Quad,actionCB:(jsxEl:JSX.Element)=>void){
+export default function WebFab(endpointUrl:string, store:Store, quad:Quad,actionCB:(jsxEl:JSX.Element)=>void){
+
+    const handleClicked = ()=> {
+        actionCB(<WebAction quad={quad}/>)
+    }
     return(
         <Tooltip title="Jump to website"  placement="top">
-                <IconButton aria-label="delete" sx={{backgroundColor:'#870058', "&:hover": {
+                <IconButton onClick={() => { handleClicked() }} aria-label="delete" sx={{backgroundColor:'#870058', "&:hover": {
                     backgroundColor: "#870058",
                     cursor: "default",
                     transform: "scale(1.2)"
                     }}}>
-                <TipsAndUpdatesOutlinedIcon sx={{color:"white"}} />
+                <LanguageIconOutlined sx={{color:"white"}} />
             </IconButton> 
         </Tooltip>
-
     )
 }

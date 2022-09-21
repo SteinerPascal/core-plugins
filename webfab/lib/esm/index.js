@@ -39,29 +39,42 @@ import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import React from 'react';
 export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
-    var isValidUrl, objects, response;
+    var validUrl, sendNoCorsReq, url, response;
     return __generator(this, function (_a) {
-        isValidUrl = function (urlString) {
-            try {
-                return Boolean(new URL(urlString));
-            }
-            catch (e) {
-                return false;
-            }
-        };
-        objects = function (store, object) {
-            return store.getQuads(null, null, object, null);
-        };
-        if (isValidUrl(quad.object.value)) {
-            console.warn('semantic btn');
-            console.warn("objectval: ".concat(quad.object.value));
-            response = window.open(new URL(quad.object.value));
-            if (response) {
-                console.log("OK: ".concat(quad.object.value));
+        switch (_a.label) {
+            case 0:
+                validUrl = function (url) {
+                    try {
+                        return new URL(url.trim()); // eslint-disable-line no-new
+                    }
+                    catch (_e) {
+                        return null;
+                    }
+                };
+                sendNoCorsReq = function (url) {
+                    try {
+                        return fetch(url, {
+                            method: 'GET',
+                            mode: 'no-cors',
+                            headers: {
+                                'Content-Type': 'text/plain'
+                            }
+                        });
+                    }
+                    catch (_e) {
+                        return null;
+                    }
+                };
+                url = validUrl(quad.object.value);
+                if (!url)
+                    return [2 /*return*/, false];
+                return [4 /*yield*/, sendNoCorsReq(url)];
+            case 1:
+                response = _a.sent();
+                if (!response)
+                    return [2 /*return*/, false];
                 return [2 /*return*/, true];
-            }
         }
-        return [2 /*return*/, false];
     });
 }); };
 export default function WebFab(endpointUrl, store, triple, actionCB) {

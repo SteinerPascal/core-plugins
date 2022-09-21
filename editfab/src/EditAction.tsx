@@ -54,9 +54,6 @@ export default function EditAction({parsedTriple,clickHandler}:{parsedTriple:Arr
             <Button color={btnState} onClick={(e)=> onClickHandling()} variant="contained" endIcon={<UpdateIcon />}>
                 Update Triples
             </Button>
-            
         </Stack>
-
-
     )
 }

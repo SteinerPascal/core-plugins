@@ -57,9 +57,9 @@ export default function EditFab(endpointUrl:string, store:Store, triple:Quad,act
     const updateDb = async (q:Quad)=>{
         const client = new SparqlClient( {endpointUrl} )
         const updateQuery = `DELETE DATA{${triple.subject.value} ${triple.predicate.value} ${triple.object.value}} INSERT {${q.subject.value} ${q.predicate.value} ${q.object.value}}`
-        const response = await client.query.update(updateQuery)
-        console.log(`Response on upate ${console.dir(response)}`)
-        return true
+        const response = await (client.query.update(updateQuery) as unknown as Promise<Response>) //TODO: check what the response object looks like. is it Really a 'Response'?
+        if(response) return true
+        return false
     }
 
     const handleClicked = ()=> {
