@@ -38,7 +38,6 @@ import ShortcutIcon from '@mui/icons-material/ShortcutOutlined';
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import React from 'react';
-import ForwardAction from './ForwardAction';
 export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         // It doesn't make sense to jump to literals, variables, or to BlankNodes
@@ -49,7 +48,21 @@ export var semanticQuery = function (endpointUrl, store, quad) { return __awaite
 }); };
 export default function ForwardFab(endpointUrl, store, quad, actionCB) {
     var handleClicked = function () {
-        actionCB(React.createElement(ForwardAction, { quad: quad }));
+        window.history.pushState({ subject: quad.object.value }, '', "/twin/".concat(getNamespaceObject(quad.object.value).value));
+    };
+    var getNamespaceObject = function (q) {
+        if (q.includes('#')) {
+            return {
+                namespace: "".concat(q.split('#').at(0), "#"),
+                value: "".concat(q.split('#').at(1))
+            };
+        }
+        else {
+            return {
+                namespace: "".concat((q.split('/').slice(0, -1)).join('/')),
+                value: "".concat(q.split('/').pop())
+            };
+        }
     };
     return (React.createElement(Tooltip, { title: "Jump to entity", placement: "top" },
         React.createElement(IconButton, { onClick: function () { handleClicked(); }, "aria-label": "delete", sx: { backgroundColor: '#870058', "&:hover": {

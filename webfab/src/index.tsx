@@ -26,7 +26,7 @@ export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
               });
             return response
         } catch (e:any) {
-            console.warn(`couldn't fetch: ${url}`)
+            //console.warn(`couldn't fetch: ${url}`)
             return null
         }
     }
@@ -41,7 +41,6 @@ export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
 }
 
 export default function WebFab(endpointUrl:string, store:Store, quad:Quad,actionCB:(jsxEl:JSX.Element)=>void){
-    console.log('inside webfab')
     const handleClicked = ()=> {
         actionCB(<WebAction quad={quad}/>)
     }

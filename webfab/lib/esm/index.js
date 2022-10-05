@@ -70,7 +70,7 @@ export var semanticQuery = function (endpointUrl, store, quad) { return __awaite
                                 return [2 /*return*/, response_1];
                             case 2:
                                 e_1 = _a.sent();
-                                console.warn("couldn't fetch: ".concat(url));
+                                //console.warn(`couldn't fetch: ${url}`)
                                 return [2 /*return*/, null];
                             case 3: return [2 /*return*/];
                         }
@@ -90,7 +90,6 @@ export var semanticQuery = function (endpointUrl, store, quad) { return __awaite
     });
 }); };
 export default function WebFab(endpointUrl, store, quad, actionCB) {
-    console.log('inside webfab');
     var handleClicked = function () {
         actionCB(React.createElement(WebAction, { quad: quad }));
     };
