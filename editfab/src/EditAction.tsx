@@ -2,9 +2,10 @@ import { Button, ButtonTypeMap, ExtendButtonBase, InputAdornment, Stack, TextFie
 import UpdateIcon from '@mui/icons-material/Update';
 import React, { useRef, useState } from "react";
 import { DataFactory, Quad } from "n3";
+import SparqlClient from "sparql-http-client";
 
 
-export default function EditAction({parsedTriple,clickHandler}:{parsedTriple:Array<{namespace:string | null, value:string}>,clickHandler:(q:Quad)=>Promise<boolean>}){
+export default function EditAction({endpointUrl,parsedTriple,quad}:{endpointUrl:string,parsedTriple:Array<{namespace:string | null, value:string}>,quad:Quad}){
     const btn = useRef<ExtendButtonBase<ButtonTypeMap<{color?:string}, "button">>>(null);
     const [subject, setSubject] = useState(DataFactory.namedNode(`${parsedTriple[0].namespace}${parsedTriple[0].value}`));
     const [predicate, setPredicate] = useState( DataFactory.namedNode(`${parsedTriple[1].namespace}${parsedTriple[1].value}`));
@@ -19,13 +20,20 @@ export default function EditAction({parsedTriple,clickHandler}:{parsedTriple:Arr
     const [btnState,setBtnState] = useState<'primary'|'success' | 'error'>('primary')
 
     const onClickHandling = () => {
-        clickHandler(DataFactory.quad(subject,predicate,object)).then(res=>{
+        updateDb(DataFactory.quad(subject,predicate,object)).then(res=>{
             if(btn) res ? setBtnState('success') : setBtnState('error')
-           
         })
     }
 
+    const updateDb = async (q:Quad)=>{
+        const client = new SparqlClient( {endpointUrl} )
+        const updateQuery = `DELETE DATA{${quad.value} ${quad.predicate.value} ${quad.object.value}} INSERT {${q.subject.value} ${q.predicate.value} ${q.object.value}}`
+        const response = await (client.query.update(updateQuery) as unknown as Promise<Response>) //TODO: check what the response object looks like. is it Really a 'Response'?
+        if(response) return true
+        return false
+    }
     return(
+   
         <Stack spacing={2}>
             <TextField
             id="outlined-basic" label="Subject" variant="outlined"     

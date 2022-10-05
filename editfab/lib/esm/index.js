@@ -37,9 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import EditIcon from "@mui/icons-material/EditOutlined";
 import { Tooltip } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import React, { useState } from "react";
+import React from "react";
 import EditAction from "./EditAction";
-import SparqlClient from "sparql-http-client";
 export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
     var objects;
     return __generator(this, function (_a) {
@@ -55,9 +54,7 @@ export var semanticQuery = function (endpointUrl, store, quad) { return __awaite
 // It shows the triples associated with this Semantic Node
 // This is first of all the relationship between digital entity and the information node
 export default function EditFab(endpointUrl, store, triple, actionCB) {
-    var _this = this;
-    var _a = useState(false), clicked = _a[0], onBtnClicked = _a[1];
-    var _b = useState(function () {
+    var createParsedTriple = function () {
         var getNamespaceObject = function (q) {
             if (q.value.includes('#')) {
                 return {
@@ -84,27 +81,10 @@ export default function EditFab(endpointUrl, store, triple, actionCB) {
         list.push(getNamespaceObject(triple.predicate));
         list.push(getNamespaceObject(triple.object));
         return list;
-    }), parsedTriple = _b[0], addParsedTriple = _b[1];
-    var updateDb = function (q) { return __awaiter(_this, void 0, void 0, function () {
-        var client, updateQuery, response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    client = new SparqlClient({ endpointUrl: endpointUrl });
-                    updateQuery = "DELETE DATA{".concat(triple.subject.value, " ").concat(triple.predicate.value, " ").concat(triple.object.value, "} INSERT {").concat(q.subject.value, " ").concat(q.predicate.value, " ").concat(q.object.value, "}");
-                    return [4 /*yield*/, client.query.update(updateQuery)]; //TODO: check what the response object looks like. is it Really a 'Response'?
-                case 1:
-                    response = _a.sent() //TODO: check what the response object looks like. is it Really a 'Response'?
-                    ;
-                    if (response)
-                        return [2 /*return*/, true];
-                    return [2 /*return*/, false];
-            }
-        });
-    }); };
+    };
     var handleClicked = function () {
-        actionCB(React.createElement(EditAction, { parsedTriple: parsedTriple, clickHandler: updateDb }));
-        onBtnClicked(!clicked);
+        var parsedTriple = createParsedTriple();
+        actionCB(React.createElement(EditAction, { endpointUrl: endpointUrl, parsedTriple: parsedTriple, quad: triple }));
     };
     return (React.createElement(React.Fragment, null,
         React.createElement(Tooltip, { title: "Edit triples", placement: "top" },

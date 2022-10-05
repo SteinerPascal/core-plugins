@@ -15,16 +15,18 @@ export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
         }
     }
 
-    const sendNoCorsReq = (url:URL) => {
+    const sendNoCorsReq = async (url:URL) => {
         try {
-            return fetch(url,{
+            const response = await fetch(url,{
                 method: 'GET',
                 mode:'no-cors',
                 headers: {
                   'Content-Type': 'text/plain'
                 }
               });
-        } catch (_e) {
+            return response
+        } catch (e:any) {
+            console.warn(`couldn't fetch: ${url}`)
             return null
         }
     }
@@ -32,13 +34,14 @@ export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
     const url = validUrl(quad.object.value)
     if(!url) return false
     const response = await sendNoCorsReq(url)
+    console.dir(response)
     if(!response) return false
     return true
     
 }
 
 export default function WebFab(endpointUrl:string, store:Store, quad:Quad,actionCB:(jsxEl:JSX.Element)=>void){
-
+    console.log('inside webfab')
     const handleClicked = ()=> {
         actionCB(<WebAction quad={quad}/>)
     }

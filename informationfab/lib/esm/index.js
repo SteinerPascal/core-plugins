@@ -41,52 +41,54 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
+import { NamedNode, Quad } from 'n3';
 import React from 'react';
 import SparqlClient from "sparql-http-client";
 import { SELECT } from '@tpluscode/sparql-builder';
 import InformationAction from './InformationAction';
 export var semanticQuery = function (endpointUrl, store, quad) { return __awaiter(void 0, void 0, void 0, function () {
-    var objects, client, query, bindingsStream;
+    var objects, waitForStream, applicable;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 objects = function (store, object) {
                     return store.getQuads(null, null, object, null);
                 };
+                waitForStream = new Promise(function (resolve, reject) {
+                    var client = new SparqlClient({ endpointUrl: endpointUrl });
+                    // Query for rdfs:comment
+                    var query = SELECT.ALL.WHERE(templateObject_1 || (templateObject_1 = __makeTemplateObject(["", " rdfs:comment ?o"], ["", " rdfs:comment ?o"])), quad.object).build();
+                    client.query.select(query).then(function (bindingsStream) {
+                        // check if this entity has a property assertion to a rdfs:comment
+                        bindingsStream.on('data', function (row) {
+                            var q = new Quad(quad.object, new NamedNode("http://www.w3.org/2000/01/rdf-schema#comment"), row['o'], new NamedNode("http://informationfab/"));
+                            store.add(q);
+                            resolve(true);
+                        });
+                        bindingsStream.on('error', function (err) {
+                            console.error(err);
+                            reject(false);
+                        });
+                    });
+                });
                 if (!objects)
                     return [2 /*return*/, false];
                 if (quad.object.termType !== "NamedNode")
                     return [2 /*return*/, false];
-                client = new SparqlClient({ endpointUrl: endpointUrl });
-                query = SELECT.ALL.WHERE(templateObject_1 || (templateObject_1 = __makeTemplateObject(["", " ?p ?o"], ["", " ?p ?o"])), quad.object).build();
-                console.log("query:".concat(query));
-                return [4 /*yield*/, client.query.select(query)
-                    // check if this entity has a property assertion to a rdfs:comment
-                ];
+                return [4 /*yield*/, waitForStream];
             case 1:
-                bindingsStream = _a.sent();
-                // check if this entity has a property assertion to a rdfs:comment
-                bindingsStream.on('data', function (row) {
-                    Object.entries(row).forEach(function (_a) {
-                        var key = _a[0], value = _a[1];
-                        if (key === 'p') {
-                            if ((value === null || value === void 0 ? void 0 : value.value) === "http://www.w3.org/2000/01/rdf-schema#comment") {
-                                console.log("".concat(quad.object.id, " has comment"));
-                                return true;
-                            }
-                        }
-                    });
-                });
-                bindingsStream.on('error', function (err) {
-                    console.error(err);
-                });
+                applicable = _a.sent();
+                if (applicable)
+                    return [2 /*return*/, true];
                 return [2 /*return*/, false];
         }
     });
 }); };
 export default function InformationFab(endpointUrl, store, quad, actionCB) {
+    var comments = store.getQuads(quad.object, new NamedNode("http://www.w3.org/2000/01/rdf-schema#comment"), null, new NamedNode("http://informationfab/"));
     var handleClicked = function () {
-        actionCB(React.createElement(InformationAction, { endpointUrl: endpointUrl, quad: quad }));
+        // the comments array could be sent whole and if multiple comments are in the dataset, then all would be rendered
+        actionCB(React.createElement(InformationAction, { endpointUrl: endpointUrl, quad: comments[0] }));
     };
     return (React.createElement(Tooltip, { title: "Show more information", placement: "top" },
         React.createElement(IconButton, { onClick: function () { handleClicked(); }, "aria-label": "delete", sx: { backgroundColor: '#870058', "&:hover": {

@@ -1,9 +1,10 @@
 /// <reference types="react" />
 import { Quad } from "n3";
-export default function EditAction({ parsedTriple, clickHandler }: {
+export default function EditAction({ endpointUrl, parsedTriple, quad }: {
+    endpointUrl: string;
     parsedTriple: Array<{
         namespace: string | null;
         value: string;
     }>;
-    clickHandler: (q: Quad) => Promise<boolean>;
+    quad: Quad;
 }): JSX.Element;

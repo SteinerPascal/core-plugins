@@ -2,9 +2,8 @@ import EditIcon from "@mui/icons-material/EditOutlined";
 import { Tooltip } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { Quad, Quad_Object, Store } from "n3";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EditAction from "./EditAction";
-import SparqlClient from "sparql-http-client";
 
 
 export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
@@ -23,9 +22,8 @@ export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
 // It shows the triples associated with this Semantic Node
 // This is first of all the relationship between digital entity and the information node
 export default function EditFab(endpointUrl:string, store:Store, triple:Quad,actionCB:(jsxEl:JSX.Element)=>void){
-    const [clicked, onBtnClicked] = useState(false);
-   
-    const [parsedTriple, addParsedTriple] = useState(()=>{
+
+    const createParsedTriple = ()=>{
         const getNamespaceObject = (q:Quad_Object)=>{
             if(q.value.includes('#')){
                 return {
@@ -44,8 +42,6 @@ export default function EditFab(endpointUrl:string, store:Store, triple:Quad,act
                     namespace:null,
                     value:`${q.value}`
                 }
-                
-
             }
         }
         const list:Array<{namespace:string | null, value:string}> = []
@@ -53,18 +49,12 @@ export default function EditFab(endpointUrl:string, store:Store, triple:Quad,act
         list.push(getNamespaceObject(triple.predicate))
         list.push(getNamespaceObject(triple.object))
         return list
-    });
-    const updateDb = async (q:Quad)=>{
-        const client = new SparqlClient( {endpointUrl} )
-        const updateQuery = `DELETE DATA{${triple.subject.value} ${triple.predicate.value} ${triple.object.value}} INSERT {${q.subject.value} ${q.predicate.value} ${q.object.value}}`
-        const response = await (client.query.update(updateQuery) as unknown as Promise<Response>) //TODO: check what the response object looks like. is it Really a 'Response'?
-        if(response) return true
-        return false
     }
 
-    const handleClicked = ()=> {
-        actionCB(<EditAction parsedTriple={parsedTriple} clickHandler={updateDb}></EditAction>)
-        onBtnClicked(!clicked)
+
+    const handleClicked = ()=> {  
+        const parsedTriple = createParsedTriple()
+        actionCB(<EditAction endpointUrl={endpointUrl} parsedTriple={parsedTriple} quad={triple}></EditAction>)
     }
 
     return(

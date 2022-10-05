@@ -62,6 +62,6 @@ export default function InformationAction(_a) {
         });
     }); };
     return (React.createElement(Stack, { spacing: 2 },
-        React.createElement(TextField, { id: "outlined-basic", label: "Comment", variant: "outlined", defaultValue: quad.object.value, onChange: function (e) { return setComment(DataFactory.namedNode(e.target.value)); }, sx: { backgroundColor: 'rgb(255,250,250,0.3)', zIndex: 1 } }),
+        React.createElement(TextField, { multiline: true, id: "outlined-basic", label: "Comment", variant: "outlined", defaultValue: quad.object.value, onChange: function (e) { return setComment(DataFactory.namedNode(e.target.value)); }, sx: { backgroundColor: 'rgb(255,250,250,0.3)', zIndex: 1, minWidth: '400px' } }),
         React.createElement(Button, { color: btnState, onClick: function (e) { return onClickHandling(); }, variant: "contained", endIcon: React.createElement(UpdateIcon, null) }, "Update Comment section")));
 }

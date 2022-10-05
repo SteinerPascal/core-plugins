@@ -52,26 +52,37 @@ export var semanticQuery = function (endpointUrl, store, quad) { return __awaite
                         return null;
                     }
                 };
-                sendNoCorsReq = function (url) {
-                    try {
-                        return fetch(url, {
-                            method: 'GET',
-                            mode: 'no-cors',
-                            headers: {
-                                'Content-Type': 'text/plain'
-                            }
-                        });
-                    }
-                    catch (_e) {
-                        return null;
-                    }
-                };
+                sendNoCorsReq = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+                    var response_1, e_1;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                _a.trys.push([0, 2, , 3]);
+                                return [4 /*yield*/, fetch(url, {
+                                        method: 'GET',
+                                        mode: 'no-cors',
+                                        headers: {
+                                            'Content-Type': 'text/plain'
+                                        }
+                                    })];
+                            case 1:
+                                response_1 = _a.sent();
+                                return [2 /*return*/, response_1];
+                            case 2:
+                                e_1 = _a.sent();
+                                console.warn("couldn't fetch: ".concat(url));
+                                return [2 /*return*/, null];
+                            case 3: return [2 /*return*/];
+                        }
+                    });
+                }); };
                 url = validUrl(quad.object.value);
                 if (!url)
                     return [2 /*return*/, false];
                 return [4 /*yield*/, sendNoCorsReq(url)];
             case 1:
                 response = _a.sent();
+                console.dir(response);
                 if (!response)
                     return [2 /*return*/, false];
                 return [2 /*return*/, true];
@@ -79,6 +90,7 @@ export var semanticQuery = function (endpointUrl, store, quad) { return __awaite
     });
 }); };
 export default function WebFab(endpointUrl, store, quad, actionCB) {
+    console.log('inside webfab');
     var handleClicked = function () {
         actionCB(React.createElement(WebAction, { quad: quad }));
     };
