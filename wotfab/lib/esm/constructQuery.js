@@ -1,0 +1,12 @@
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+import namespace from "@rdfjs/namespace";
+import { CONSTRUCT } from "@tpluscode/sparql-builder";
+export default (function (iri) {
+    var td = namespace('https://www.w3.org/2019/wot/td#');
+    var query = CONSTRUCT(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\t\n    ", " ", " ?eventAff.\n    ?eventAff ?eventP ?eventO.\n    ?eventAff ", " ?eventForm.\n    ?eventForm ?eFp ?eFo.\n    \n    ", " ", " ?propAf.\n    ?propAf\t?propP ?propO.\n    ?propAf ", " ?propForm.\n    ?propForm ?pFp ?pFo.\n    \n    ", " ", " ?actionAff.\n    ?actAff ?actP ?actO.\n    ?actAff ", " ?actForm.\n    ?actForm ?aFp ?aFo\n   "], ["\t\n    ", " ", " ?eventAff.\n    ?eventAff ?eventP ?eventO.\n    ?eventAff ", " ?eventForm.\n    ?eventForm ?eFp ?eFo.\n    \n    ", " ", " ?propAf.\n    ?propAf\t?propP ?propO.\n    ?propAf ", " ?propForm.\n    ?propForm ?pFp ?pFo.\n    \n    ", " ", " ?actionAff.\n    ?actAff ?actP ?actO.\n    ?actAff ", " ?actForm.\n    ?actForm ?aFp ?aFo\n   "])), iri, td.hasEventAffordance, td.hasForm, iri, td.hasPropertyAffordance, td.hasForm, iri, td.hasActionAffordance, td.hasForm).WHERE(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n   OPTIONAL{\n        ", " ", " ?eventAff.\n        ?eventAff ?eventP ?eventO.\n        ?eventAff ", " ?eventForm.\n        ?eventForm ?eFp ?eFo.\n   }\n\n   OPTIONAL {\n        ", " ", " ?propAf.\n        ?propAf\t?propP ?propO.\n        ?propAf ", " ?propForm.\n        ?propForm ?pFp ?pFo.\n   }\n\n   OPTIONAL{\n        ", " ", " ?actionAff.\n        ?actAff ?actP ?actO.\n        ?actAff ", " ?actForm.\n        ?actForm ?aFp ?aFo\n   }"], ["\n   OPTIONAL{\n        ", " ", " ?eventAff.\n        ?eventAff ?eventP ?eventO.\n        ?eventAff ", " ?eventForm.\n        ?eventForm ?eFp ?eFo.\n   }\n\n   OPTIONAL {\n        ", " ", " ?propAf.\n        ?propAf\t?propP ?propO.\n        ?propAf ", " ?propForm.\n        ?propForm ?pFp ?pFo.\n   }\n\n   OPTIONAL{\n        ", " ", " ?actionAff.\n        ?actAff ?actP ?actO.\n        ?actAff ", " ?actForm.\n        ?actForm ?aFp ?aFo\n   }"])), iri, td.hasEventAffordance, td.hasForm, iri, td.hasPropertyAffordance, td.hasForm, iri, td.hasActionAffordance, td.hasForm).LIMIT(10000).build();
+    return query;
+});
+var templateObject_1, templateObject_2;
