@@ -13,7 +13,6 @@ export default function DeleteAction({endpointUrl,quad}:{endpointUrl:string,quad
         const client = new SparqlClient( {endpointUrl} )
         const updateQuery = `DELETE DATA{${quad.subject.value} ${quad.predicate.value} ${quad.object.value}} INSERT {${q.subject.value} ${q.predicate.value} ${q.object.value}}`
         const response = await client.query.update(updateQuery) as unknown as boolean
-        console.log(`Response on delete ${console.dir(response)}`)
         if(btn) response ? setBtnState('success') : setBtnState('error')
     }
 

@@ -1,6 +1,6 @@
 import { Tooltip } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
-import { Literal, NamedNode, OTerm, Quad, Store } from 'n3';
+import { Literal, NamedNode, Quad, Store } from 'n3';
 import React from 'react';
 import SparqlClient from "sparql-http-client"
 import { SELECT } from '@tpluscode/sparql-builder'

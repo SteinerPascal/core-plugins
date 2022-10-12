@@ -7,13 +7,11 @@ import React from 'react';
 
 
 export const semanticQuery = async (endpointUrl:string,store:Store,quad:Quad)=>{
-
     // It doesn't make sense to jump to literals, variables, or to BlankNodes
    if(quad.object.termType === "NamedNode") return true
 
    return false
 }
-
 
 
 export default function ForwardFab(endpointUrl:string, store:Store, quad:Quad,actionCB:(jsxEl:JSX.Element)=>void){
